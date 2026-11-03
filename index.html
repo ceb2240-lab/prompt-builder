@@ -3,19 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PREP Prompt Builder</title>
+<title>PREPARE Prompt Builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#F1F3F6; --surface:#FFFFFF; --ink:#17202B; --muted:#586374; --line:#D6DCE4; --field:#FAFBFC; --edge:#7E8898;
-  --c1:#2B50D6; --c2:#8A3FA0; --c3:#0D7C70; --c4:#8A4E00;
-  --t1:#E6EBFC; --t2:#F3E7F6; --t3:#DFF2EF; --t4:#FAEDD8;
+  --c1:#2B50D6; --c2:#8A3FA0; --c3:#0D7C70; --c4:#8A4E00; --c5:#A3305A; --c6:#4D6A0F; --c7:#0A6A90;
+  --t1:#E6EBFC; --t2:#F3E7F6; --t3:#DFF2EF; --t4:#FAEDD8; --t5:#F8E6EE; --t6:#ECF2DE; --t7:#DFEFF6;
   --ok:#1F7A3E; --focus:#2B50D6;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", Verdana, system-ui, sans-serif;
-  --mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -24,16 +23,16 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#11151B; --surface:#1A2029; --ink:#E7EBF1; --muted:#9BA6B5; --line:#2D3643; --field:#151A22; --edge:#6E7A8B;
-    --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C;
-    --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F;
+    --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C; --c5:#F07AA6; --c6:#A6CF5C; --c7:#5CC2E8;
+    --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F; --t5:#36182A; --t6:#222E12; --t7:#10293A;
     --ok:#5BD08A; --focus:#8099FF;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#11151B; --surface:#1A2029; --ink:#E7EBF1; --muted:#9BA6B5; --line:#2D3643; --field:#151A22; --edge:#6E7A8B;
-  --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C;
-  --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F;
+  --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C; --c5:#F07AA6; --c6:#A6CF5C; --c7:#5CC2E8;
+  --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F; --t5:#36182A; --t6:#222E12; --t7:#10293A;
   --ok:#5BD08A; --focus:#8099FF;
   color-scheme:dark;
 }
@@ -43,45 +42,50 @@ html.large{font-size:20px}
 body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); line-height:1.55; -webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit; color:inherit}
 :focus-visible{outline:3px solid var(--focus); outline-offset:2px; border-radius:6px}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 
-.wrap{max-width:1180px; margin:0 auto; padding:1.25rem clamp(1rem,3vw,2rem) 3rem}
+.wrap{max-width:1180px; margin:0 auto; padding:1.25rem clamp(1rem,3vw,2rem) 2rem}
 
 /* top bar */
 .top{display:flex; flex-wrap:wrap; gap:.75rem 1.5rem; align-items:flex-end; justify-content:space-between; margin-bottom:.5rem}
-.top h1{font-family:var(--display); font-weight:700; font-size:1.35rem; margin:0; letter-spacing:-.01em}
-.top p{margin:.15rem 0 0; color:var(--muted); max-width:52ch}
 .top > div:first-child{flex:1 1 300px; min-width:0}
+.top h1{font-family:var(--display); font-weight:700; font-size:1.35rem; margin:0; letter-spacing:-.01em}
+.top p{margin:.15rem 0 0; color:var(--muted); max-width:60ch}
 .tools{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; justify-content:flex-end; margin-left:auto}
 #exampleSel{max-width:15rem; text-overflow:ellipsis}
 .btn{border:1px solid var(--edge); background:var(--surface); border-radius:999px; padding:.45rem .95rem; cursor:pointer; font-size:.9rem; line-height:1.2}
-.btn:hover{border-color:var(--muted)}
+.btn:hover{border-color:var(--ink)}
 .btn.primary{background:var(--ink); color:var(--bg); border-color:var(--ink); font-weight:700}
 .btn.primary:hover{opacity:.9}
 .btn[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
 select.btn{appearance:none; padding-right:2rem; background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%); background-position:calc(100% - 16px) 55%,calc(100% - 11px) 55%; background-size:5px 5px; background-repeat:no-repeat}
 
 /* the letters */
-.letters{display:grid; grid-template-columns:repeat(4,1fr) auto; gap:clamp(.25rem,1.5vw,1rem); align-items:end; margin:1.25rem 0 1.5rem; border-bottom:2px solid var(--line)}
-.letter{background:none; border:0; padding:0 0 .6rem; cursor:pointer; text-align:left; position:relative}
-.letter .glyph{display:block; font-family:var(--display); font-weight:800; font-size:clamp(3.4rem,11vw,8.5rem); line-height:.82; letter-spacing:-.04em;
+.steps-nav{margin:1.25rem 0 1.6rem}
+.letters{display:grid; grid-template-columns:repeat(7,1fr); gap:.8rem clamp(.25rem,1.2vw,.9rem); border-bottom:2px solid var(--line)}
+.letter{background:none; border:0; padding:0 0 .6rem; cursor:pointer; text-align:left; position:relative; min-width:0}
+.letter .glyph{display:block; font-family:var(--display); font-weight:800; font-size:clamp(2.7rem,8vw,6.2rem); line-height:.82; letter-spacing:-.04em;
   color:transparent; -webkit-text-stroke:2px var(--line); transition:color .35s ease, -webkit-text-stroke-color .35s ease}
-.letter .word{display:block; font-weight:700; font-size:.95rem; margin-top:.35rem}
+.letter .word{display:block; font-weight:700; font-size:.9rem; margin-top:.35rem; overflow-wrap:anywhere}
 .letter .state{display:block; font-size:.8rem; color:var(--muted)}
 .letter .state .check{color:var(--ok); font-weight:700; font-size:.95rem; margin-left:.15rem}
 .letter::after{content:""; position:absolute; left:0; right:0; bottom:-2px; height:4px; background:transparent; border-radius:2px}
 .letter[data-k="1"]{--c:var(--c1)} .letter[data-k="2"]{--c:var(--c2)} .letter[data-k="3"]{--c:var(--c3)} .letter[data-k="4"]{--c:var(--c4)}
+.letter[data-k="5"]{--c:var(--c5)} .letter[data-k="6"]{--c:var(--c6)} .letter[data-k="7"]{--c:var(--c7)}
 .letter.current .glyph{-webkit-text-stroke-color:var(--c)}
-.letter.current::after{background:var(--c)}
 .letter.done .glyph{color:var(--c); -webkit-text-stroke-color:var(--c)}
-.after{display:flex; flex-wrap:wrap; gap:.5rem; align-self:end; padding-bottom:.9rem}
+.letter.current::after{background:var(--c)}
+.after{display:flex; flex-wrap:wrap; gap:.5rem; justify-content:flex-end; margin-top:.85rem}
 .letter.review{padding:0}
-.letter.review .word{font-family:var(--display); font-size:1.05rem; border:2px solid var(--ink); border-radius:999px; padding:.4rem 1rem; margin:0}
+.letter.review .word{font-family:var(--display); font-size:1.02rem; border:2px solid var(--ink); border-radius:999px; padding:.4rem 1rem; margin:0}
 .letter.review.current .word{background:var(--ink); color:var(--bg)}
 .letter.review::after{display:none}
+@media (max-width:760px){ .letters{grid-template-columns:repeat(4,1fr)} .letter .word{font-size:clamp(.62rem,3.1vw,.9rem)} .after{justify-content:flex-start} }
+@media (max-width:360px){ .letters{column-gap:.15rem} .letter .word{font-size:.6rem; letter-spacing:-.01em} }
 
 /* layout */
 .work{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:clamp(1rem,3vw,2.25rem); align-items:start}
-@media (max-width:860px){ .work{grid-template-columns:1fr} .letters{grid-template-columns:repeat(4,1fr)} .after{grid-column:1/-1; padding-top:.5rem} }
+@media (max-width:860px){ .work{grid-template-columns:1fr} }
 
 .step{display:none}
 .step.active{display:block}
@@ -90,12 +94,17 @@ select.btn{appearance:none; padding-right:2rem; background-image:linear-gradient
 .step .lede strong{color:var(--kc)}
 .step[data-k="1"]{--kc:var(--c1); --kt:var(--t1)} .step[data-k="2"]{--kc:var(--c2); --kt:var(--t2)}
 .step[data-k="3"]{--kc:var(--c3); --kt:var(--t3)} .step[data-k="4"]{--kc:var(--c4); --kt:var(--t4)}
-.step[data-k="5"],.step[data-k="6"]{--kc:var(--ink); --kt:var(--surface)}
+.step[data-k="5"]{--kc:var(--c5); --kt:var(--t5)} .step[data-k="6"]{--kc:var(--c6); --kt:var(--t6)}
+.step[data-k="7"]{--kc:var(--c7); --kt:var(--t7)}
+.step[data-k="8"],.step[data-k="9"]{--kc:var(--ink); --kt:var(--surface)}
+.optional-tag{display:inline-block; font-family:var(--body); font-size:.8rem; font-weight:700; letter-spacing:.02em; color:var(--kc); border:1.5px solid var(--kc); border-radius:999px; padding:.05rem .55rem; margin-bottom:.6rem}
 
 .ask{background:var(--kt); border-radius:12px; padding:.85rem 1.1rem; margin:0 0 1.5rem}
 .ask p{margin:0 0 .3rem; font-weight:700; font-size:.92rem}
 .ask ul{margin:0; padding-left:1.15rem}
 .ask li{margin:.1rem 0}
+.tip{border-left:4px solid var(--kc); background:var(--kt); padding:.7rem .95rem; border-radius:0 10px 10px 0; margin:0 0 1.4rem; font-size:.95rem; max-width:62ch}
+.tip b{display:block}
 
 .field{margin:0 0 1.35rem}
 .field label,.field .lbl{display:block; font-weight:700; margin-bottom:.15rem}
@@ -107,7 +116,7 @@ textarea{resize:vertical; min-height:5.2rem}
 input[type=text]:focus,textarea:focus{outline:none; border-color:var(--kc,var(--focus)); box-shadow:0 0 0 3px color-mix(in srgb,var(--kc,var(--focus)) 22%,transparent)}
 
 .chips{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.55rem}
-.chip{border:1.5px solid var(--edge); background:var(--surface); border-radius:999px; padding:.28rem .75rem; font-size:.86rem; cursor:pointer}
+.chip{border:1.5px solid var(--edge); background:var(--surface); border-radius:999px; padding:.28rem .75rem; font-size:.86rem; cursor:pointer; text-align:left}
 .chip:hover{border-color:var(--kc)}
 .chip[aria-pressed="true"]{background:var(--kc); border-color:var(--kc); color:var(--surface); font-weight:700}
 
@@ -116,7 +125,7 @@ input[type=text]:focus,textarea:focus{outline:none; border-color:var(--kc,var(--
 .row .n{flex:none; width:1.6rem; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums}
 .row input{flex:1}
 .icon-btn{flex:none; width:2.2rem; height:2.2rem; border-radius:50%; border:1px solid var(--edge); background:var(--surface); cursor:pointer; font-size:1.1rem; line-height:1}
-.icon-btn:hover{border-color:var(--muted)}
+.icon-btn:hover{border-color:var(--ink)}
 .add{margin-top:.55rem; background:none; border:1.5px dashed var(--edge); border-radius:10px; padding:.5rem .9rem; cursor:pointer; color:var(--muted); width:100%; text-align:left}
 .add:hover{border-color:var(--kc); color:var(--ink)}
 
@@ -130,10 +139,9 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .pair b{display:block; font-size:.82rem; margin-bottom:.2rem; color:var(--muted)}
 
 .toggle{display:flex; gap:.7rem; align-items:flex-start; cursor:pointer; background:var(--field); border:1.5px solid var(--edge); border-radius:10px; padding:.7rem .85rem}
-.toggle input{width:1.15rem; height:1.15rem; margin-top:.2rem; accent-color:var(--kc)}
+.toggle input{width:1.15rem; height:1.15rem; margin-top:.2rem; accent-color:var(--kc); flex:none}
 .toggle b{display:block}
 .toggle .tg-desc{display:block; font-size:.9rem; color:var(--muted)}
-.seg-label{display:block; font-style:normal; font-weight:700; font-size:.75rem; color:var(--muted); margin-bottom:.1rem}
 
 .nav{display:flex; justify-content:space-between; gap:.75rem; margin-top:1.75rem; padding-top:1.1rem; border-top:1px solid var(--line)}
 
@@ -146,8 +154,10 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .segs{display:flex; flex-direction:column; gap:.55rem; max-height:min(62vh,640px); overflow:auto}
 .seg{white-space:pre-wrap; font-size:.92rem; line-height:1.5; padding:.5rem .7rem .5rem .8rem; border-left:4px solid var(--sc); border-radius:0 8px 8px 0; background:transparent; transition:background .25s}
 .seg.k1{--sc:var(--c1); --st:var(--t1)} .seg.k2{--sc:var(--c2); --st:var(--t2)} .seg.k3{--sc:var(--c3); --st:var(--t3)} .seg.k4{--sc:var(--c4); --st:var(--t4)}
+.seg.k5{--sc:var(--c5); --st:var(--t5)} .seg.k6{--sc:var(--c6); --st:var(--t6)} .seg.k7{--sc:var(--c7); --st:var(--t7)}
 .seg.is-current{background:var(--st)}
 .seg.empty{color:var(--muted); font-style:italic; border-left-style:dashed}
+.seg-label{display:block; font-style:normal; font-weight:700; font-size:.75rem; color:var(--muted); margin-bottom:.1rem}
 .legend{display:flex; flex-wrap:wrap; gap:.3rem .9rem; margin-top:.85rem; font-size:.8rem; color:var(--muted)}
 .legend i{display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:.3rem; vertical-align:-1px}
 
@@ -155,7 +165,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .final{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:1rem 1.15rem; white-space:pre-wrap; font-size:.98rem; line-height:1.55; margin:0 0 1rem; max-height:60vh; overflow:auto}
 .checks{list-style:none; padding:0; margin:0 0 1.25rem; display:flex; flex-direction:column; gap:.4rem}
 .checks li{display:flex; gap:.6rem; align-items:flex-start; padding:.5rem .7rem; border-radius:10px; background:var(--surface); border:1px solid var(--line)}
-.checks .mark{flex:none; width:1.35rem; height:1.35rem; border-radius:50%; display:grid; place-items:center; font-size:.8rem; font-weight:700; border:1.5px solid var(--line); color:var(--muted)}
+.checks .mark{flex:none; width:1.35rem; height:1.35rem; border-radius:50%; display:grid; place-items:center; font-size:.8rem; font-weight:700; border:1.5px solid var(--edge); color:var(--muted)}
 .checks li.ok .mark{background:var(--ok); border-color:var(--ok); color:var(--surface)}
 .checks .txt{flex:1}
 .checks .txt span{display:block; font-size:.85rem; color:var(--muted)}
@@ -166,7 +176,6 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .next-tips ul{margin:0; padding-left:1.15rem}
 .copy-row{display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-bottom:1.5rem}
 .status{color:var(--ok); font-weight:700; font-size:.9rem}
-.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 
 /* responsible use */
 .reminders{list-style:none; padding:0; margin:0 0 1.4rem; display:flex; flex-direction:column; gap:1.1rem}
@@ -177,8 +186,9 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .flag ul{margin:.3rem 0 0; padding-left:1.1rem}
 .callout{border:1.5px solid var(--ink); border-radius:12px; padding:.85rem 1rem; display:flex; gap:.8rem 1rem; align-items:center; justify-content:space-between; flex-wrap:wrap; margin:0 0 1.4rem}
 .callout .note{display:block; max-width:46ch}
+
 .foot{margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--line); font-size:.85rem; color:var(--muted)}
-.foot p{margin:0}
+.foot p{margin:0 0 .25rem}
 .foot a{color:var(--c1); text-underline-offset:2px}
 
 @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
@@ -190,8 +200,8 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 
   <header class="top">
     <div>
-      <h1>PREP Prompt Builder</h1>
-      <p>Build a clear, well-structured prompt one step at a time: Prompt, Role, Explicit instructions, Parameters.</p>
+      <h1>PREPARE Prompt Builder</h1>
+      <p>Build a strong prompt one step at a time. The first four steps (PREP) build your prompt; the last three (ARE) make it even better.</p>
     </div>
     <div class="tools">
       <label class="sr" for="exampleSel">View a prompt example</label>
@@ -207,21 +217,29 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
     </div>
   </header>
 
-  <nav class="letters" aria-label="PREP steps">
-    <button class="letter" data-k="1" data-go="1" type="button"><span class="glyph" aria-hidden="true">P</span><span class="word">Prompt</span><span class="state">To do</span></button>
-    <button class="letter" data-k="2" data-go="2" type="button"><span class="glyph" aria-hidden="true">R</span><span class="word">Role</span><span class="state">To do</span></button>
-    <button class="letter" data-k="3" data-go="3" type="button"><span class="glyph" aria-hidden="true">E</span><span class="word">Explicit</span><span class="state">To do</span></button>
-    <button class="letter" data-k="4" data-go="4" type="button"><span class="glyph" aria-hidden="true">P</span><span class="word">Parameters</span><span class="state">To do</span></button>
-    <div class="after"><button class="letter review" data-go="5" type="button"><span class="word">Review &amp; copy</span></button><button class="letter review" data-go="6" type="button"><span class="word">Responsible use reminders</span></button></div>
+  <nav class="steps-nav" aria-label="PREPARE steps">
+    <div class="letters">
+      <button class="letter" data-k="1" data-go="1" type="button"><span class="glyph" aria-hidden="true">P</span><span class="word">Prompt</span><span class="state">To do</span></button>
+      <button class="letter" data-k="2" data-go="2" type="button"><span class="glyph" aria-hidden="true">R</span><span class="word">Role</span><span class="state">To do</span></button>
+      <button class="letter" data-k="3" data-go="3" type="button"><span class="glyph" aria-hidden="true">E</span><span class="word">Explicit</span><span class="state">To do</span></button>
+      <button class="letter" data-k="4" data-go="4" type="button"><span class="glyph" aria-hidden="true">P</span><span class="word">Parameters</span><span class="state">To do</span></button>
+      <button class="letter" data-k="5" data-go="5" type="button"><span class="glyph" aria-hidden="true">A</span><span class="word">Ask</span><span class="state">To do</span></button>
+      <button class="letter" data-k="6" data-go="6" type="button"><span class="glyph" aria-hidden="true">R</span><span class="word">Rate</span><span class="state">To do</span></button>
+      <button class="letter" data-k="7" data-go="7" type="button"><span class="glyph" aria-hidden="true">E</span><span class="word">Emotion</span><span class="state">To do</span></button>
+    </div>
+    <div class="after">
+      <button class="letter review" data-go="8" type="button"><span class="word">Review &amp; copy</span></button>
+      <button class="letter review" data-go="9" type="button"><span class="word">Responsible use reminders</span></button>
+    </div>
   </nav>
 
   <div class="work">
     <main>
 
-      <!-- STEP 1: PROMPT -->
+      <!-- 1 PROMPT -->
       <section class="step" data-k="1" id="step1" aria-labelledby="h1">
         <h2 id="h1">What do you want the AI to do?</h2>
-        <p class="lede">The <strong>Prompt</strong> is your core request. Lead with an action verb and name the thing you want made, so the AI knows the job before anything else.</p>
+        <p class="lede">The <strong>Prompt</strong> is your core request. Start with a clear question or instruction that sets the stage for everything that follows.</p>
         <div class="ask">
           <p>Ask yourself</p>
           <ul>
@@ -233,7 +251,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <div class="field">
           <label for="task">Your request</label>
           <span class="hint">One or two sentences. Start with a verb.</span>
-          <textarea id="task" data-field="task" rows="3" placeholder="e.g. Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class."></textarea>
+          <textarea id="task" data-field="task" rows="3" placeholder="e.g. Write a summary about the latest AI trends in education."></textarea>
           <div class="chips" data-insert-target="task">
             <button class="chip" type="button" data-insert="Write ">Write</button>
             <button class="chip" type="button" data-insert="Create ">Create</button>
@@ -247,99 +265,102 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <div class="field">
           <label for="purpose">Why you need it <span class="opt">(optional)</span></label>
           <span class="hint">The goal behind the task helps the AI make better choices.</span>
-          <input type="text" id="purpose" data-field="purpose" placeholder="e.g. so students can explain the process in their own words by the end of class">
+          <input type="text" id="purpose" data-field="purpose" placeholder="e.g. so I can share key takeaways with my department">
         </div>
         <details class="compare">
           <summary>See a weak vs. strong prompt</summary>
           <div class="pair">
-            <div class="weak"><b>Weak</b>Photosynthesis lesson.</div>
-            <div class="strong"><b>Stronger</b>Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class, so students can explain the process in their own words.</div>
+            <div class="weak"><b>Weak</b>AI in education.</div>
+            <div class="strong"><b>Stronger</b>Write a summary about the latest AI trends in education, so I can share key takeaways with my department.</div>
           </div>
         </details>
         <div class="nav"><span></span><button class="btn primary" type="button" data-go="2">Next: Role</button></div>
       </section>
 
-      <!-- STEP 2: ROLE -->
+      <!-- 2 ROLE -->
       <section class="step" data-k="2" id="step2" aria-labelledby="h2">
         <h2 id="h2">Who should the AI be?</h2>
-        <p class="lede">Giving the AI a <strong>Role</strong> sets the knowledge, vocabulary and perspective it brings. Be specific about experience and setting.</p>
+        <p class="lede">Give the AI a <strong>Role</strong> and outline the context. The role sets the knowledge and perspective it brings; the context tells it about the situation it’s working in.</p>
         <div class="ask">
           <p>Ask yourself</p>
           <ul>
             <li>Whose expertise would you hire for this task?</li>
             <li>How experienced are they, and where do they work?</li>
-            <li>Is there a viewpoint they should take (critic, coach, customer)?</li>
+            <li>What does the AI need to know about your situation?</li>
           </ul>
         </div>
         <div class="field">
           <label for="role">Act as…</label>
           <span class="hint">Describe a person, not just a job title.</span>
-          <input type="text" id="role" data-field="role" placeholder="e.g. an experienced secondary science teacher who makes abstract ideas concrete">
+          <input type="text" id="role" data-field="role" placeholder="e.g. an education expert analysing AI trends">
           <div class="chips" data-set-target="role">
             <button class="chip" type="button" data-set="an experienced teacher who designs engaging, well-paced lessons">Experienced teacher</button>
+            <button class="chip" type="button" data-set="an experienced graduate faculty member and researcher">Graduate faculty member</button>
             <button class="chip" type="button" data-set="a friendly, professional customer service manager">Customer service manager</button>
             <button class="chip" type="button" data-set="an expert editor who writes in plain, clear English">Plain-English editor</button>
-            <button class="chip" type="button" data-set="a supportive coach who asks good questions">Coach</button>
             <button class="chip" type="button" data-set="a sceptical reviewer looking for weaknesses">Critical reviewer</button>
           </div>
         </div>
         <div class="field">
           <label for="roleExtra">Expertise to draw on <span class="opt">(optional)</span></label>
           <span class="hint">Methods, standards or experience the role should use.</span>
-          <input type="text" id="roleExtra" data-field="roleExtra" placeholder="e.g. active learning strategies and common student misconceptions">
+          <input type="text" id="roleExtra" data-field="roleExtra" placeholder="e.g. recent research on AI in higher education">
+        </div>
+        <div class="field">
+          <label for="context">Background and context</label>
+          <span class="hint">Who’s involved, what’s happened so far, any constraints.</span>
+          <textarea id="context" data-field="context" rows="3" placeholder="e.g. My department is deciding whether to adopt AI tools next year. Most colleagues have little experience with AI."></textarea>
         </div>
         <details class="compare">
           <summary>See a weak vs. strong role</summary>
           <div class="pair">
-            <div class="weak"><b>Weak</b>Act as a teacher.</div>
-            <div class="strong"><b>Stronger</b>Act as an experienced secondary science teacher who makes abstract ideas concrete. Draw on active learning strategies and common student misconceptions.</div>
+            <div class="weak"><b>Weak</b>Act as an expert.</div>
+            <div class="strong"><b>Stronger</b>You’re an education expert analysing AI trends. My department is deciding whether to adopt AI tools next year, and most colleagues are new to AI.</div>
           </div>
         </details>
         <div class="nav"><button class="btn" type="button" data-go="1">Back</button><button class="btn primary" type="button" data-go="3">Next: Explicit</button></div>
       </section>
 
-      <!-- STEP 3: EXPLICIT -->
+      <!-- 3 EXPLICIT -->
       <section class="step" data-k="3" id="step3" aria-labelledby="h3">
         <h2 id="h3">Spell out the details</h2>
-        <p class="lede"><strong>Explicit</strong> instructions remove the guesswork. Share the background the AI can’t know, then list exactly what to include, in what order, and what to leave out.</p>
+        <p class="lede">Be <strong>Explicit</strong> to avoid misunderstandings. List exactly what the response must include, in what order, and what to leave out.</p>
         <div class="ask">
           <p>Ask yourself</p>
           <ul>
-            <li>What does the AI need to know about my situation?</li>
             <li>What must the response include?</li>
+            <li>Is there an order or structure it should follow?</li>
             <li>What would make me reject the answer?</li>
           </ul>
         </div>
         <div class="field">
-          <label for="context">Background and context</label>
-          <span class="hint">Who’s involved, what’s happened so far, any constraints.</span>
-          <textarea id="context" data-field="context" rows="3" placeholder="e.g. Mixed-ability class of 28; two students have EAL needs. They know plants need light and water but haven’t studied cells yet."></textarea>
-        </div>
-        <div class="field">
           <span class="lbl" id="instrLbl">Specific instructions</span>
           <span class="hint">One instruction per line. Aim for at least two.</span>
-          <div class="list" id="instrList" aria-labelledby="instrLbl"></div>
+          <div class="list" id="instrList" role="group" aria-labelledby="instrLbl"></div>
           <button class="add" type="button" id="addInstr">+ Add an instruction</button>
         </div>
         <div class="field">
           <label for="avoid">Avoid <span class="opt">(optional)</span></label>
           <span class="hint">Things you don’t want: jargon, clichés, certain topics.</span>
-          <input type="text" id="avoid" data-field="avoid" placeholder="e.g. the chemical equation, and any worksheets that need printing">
+          <input type="text" id="avoid" data-field="avoid" placeholder="e.g. technical jargon and product endorsements">
+        </div>
+        <div class="field">
+          <label class="toggle"><input type="checkbox" id="thinking" data-field="thinking"><span><b>Ask for step-by-step thinking</b><span class="tg-desc">Adds “Take this task one step at a time, and explain your thinking steps.” Helpful for analysis, planning and problem-solving.</span></span></label>
         </div>
         <details class="compare">
           <summary>See weak vs. strong instructions</summary>
           <div class="pair">
-            <div class="weak"><b>Weak</b>Make it good and engaging.</div>
-            <div class="strong"><b>Stronger</b>Start with a hook question. Include one hands-on activity. End with a 3-question exit ticket. Add a support note for EAL students.</div>
+            <div class="weak"><b>Weak</b>Make it good and thorough.</div>
+            <div class="strong"><b>Stronger</b>Mention how AI can contribute to personalised learning. Include one benefit and one risk for each trend. End with three questions for discussion.</div>
           </div>
         </details>
         <div class="nav"><button class="btn" type="button" data-go="2">Back</button><button class="btn primary" type="button" data-go="4">Next: Parameters</button></div>
       </section>
 
-      <!-- STEP 4: PARAMETERS -->
+      <!-- 4 PARAMETERS -->
       <section class="step" data-k="4" id="step4" aria-labelledby="h4">
         <h2 id="h4">Shape the output</h2>
-        <p class="lede"><strong>Parameters</strong> set the boundaries of the answer: its format, length, tone and audience. This is how you get something you can use straight away.</p>
+        <p class="lede">Set clear <strong>Parameters</strong>, such as the format, length, tone of voice and audience. This is how you get something you can use straight away.</p>
         <div class="ask">
           <p>Ask yourself</p>
           <ul>
@@ -350,7 +371,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         </div>
         <div class="field">
           <label for="format">Format</label>
-          <input type="text" id="format" data-field="format" placeholder="e.g. a table with columns for time, activity and resources">
+          <input type="text" id="format" data-field="format" placeholder="e.g. a table with columns for trend, benefit and risk">
           <div class="chips" data-set-target="format">
             <button class="chip" type="button" data-set="bulleted list">Bulleted list</button>
             <button class="chip" type="button" data-set="table">Table</button>
@@ -361,10 +382,10 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         </div>
         <div class="field">
           <label for="length">Length</label>
-          <input type="text" id="length" data-field="length" placeholder="e.g. under 300 words, fits on one page">
+          <input type="text" id="length" data-field="length" placeholder="e.g. under 300 words">
           <div class="chips" data-set-target="length">
             <button class="chip" type="button" data-set="under 100 words">Under 100 words</button>
-            <button class="chip" type="button" data-set="about 300 words">About 300 words</button>
+            <button class="chip" type="button" data-set="under 300 words">Under 300 words</button>
             <button class="chip" type="button" data-set="no more than one page">One page</button>
             <button class="chip" type="button" data-set="5 items">5 items</button>
           </div>
@@ -373,33 +394,110 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
           <span class="lbl" id="toneLbl">Tone</span>
           <span class="hint">Pick any that fit.</span>
           <div class="chips" id="toneChips" role="group" aria-labelledby="toneLbl" style="margin-top:0">
+            <button class="chip" type="button" data-tone="informative">Informative</button>
             <button class="chip" type="button" data-tone="friendly">Friendly</button>
             <button class="chip" type="button" data-tone="professional">Professional</button>
             <button class="chip" type="button" data-tone="encouraging">Encouraging</button>
             <button class="chip" type="button" data-tone="concise">Concise</button>
             <button class="chip" type="button" data-tone="formal">Formal</button>
             <button class="chip" type="button" data-tone="playful">Playful</button>
-            <button class="chip" type="button" data-tone="neutral">Neutral</button>
           </div>
         </div>
         <div class="field">
           <label for="audience">Audience and reading level <span class="opt">(optional)</span></label>
-          <input type="text" id="audience" data-field="audience" placeholder="e.g. written for a teacher to follow; student materials at a 12-year-old reading level">
+          <input type="text" id="audience" data-field="audience" placeholder="e.g. faculty colleagues with little AI experience">
         </div>
         <div class="field">
           <label for="extra">Other constraints <span class="opt">(optional)</span></label>
           <span class="hint">One per line: language, spelling, citations, things to include at the end.</span>
-          <textarea id="extra" data-field="extra" rows="2" placeholder="e.g. Use UK spelling"></textarea>
+          <textarea id="extra" data-field="extra" rows="2" placeholder="e.g. Use APA 7th edition for any sources"></textarea>
         </div>
-        <div class="field">
-          <label class="toggle"><input type="checkbox" id="clarify" data-field="clarify"><span><b>Ask me questions first</b><span class="tg-desc">Adds a line asking the AI to check anything unclear before it starts. Useful for bigger tasks.</span></span></label>
-        </div>
-        <div class="nav"><button class="btn" type="button" data-go="3">Back</button><button class="btn primary" type="button" data-go="5">Review my prompt</button></div>
+        <div class="nav"><button class="btn" type="button" data-go="3">Back</button><button class="btn primary" type="button" data-go="5">Next: Ask</button></div>
       </section>
 
-      <!-- STEP 5: REVIEW -->
+      <!-- 5 ASK -->
       <section class="step" data-k="5" id="step5" aria-labelledby="h5">
-        <h2 id="h5">Your finished prompt</h2>
+        <span class="optional-tag">Booster</span>
+        <h2 id="h5">Invite the AI to ask questions</h2>
+        <p class="lede"><strong>Ask</strong> the AI to ask you clarifying questions before it continues. Its questions often reveal details you forgot to include, which leads to a better first answer.</p>
+        <div class="ask">
+          <p>Ask yourself</p>
+          <ul>
+            <li>Is anything about the task open to interpretation?</li>
+            <li>Would a human expert want to check something with you first?</li>
+            <li>How many questions do you have time to answer?</li>
+          </ul>
+        </div>
+        <div class="field">
+          <label for="ask">Your request for questions</label>
+          <span class="hint">Choose a starter or write your own.</span>
+          <textarea id="ask" data-field="ask" rows="2" placeholder="e.g. Ask me some clarification questions first, and then answer."></textarea>
+          <div class="chips" data-set-target="ask">
+            <button class="chip" type="button" data-set="Ask me some clarification questions first, and then answer.">Questions first, then answer</button>
+            <button class="chip" type="button" data-set="Ask me up to 3 clarifying questions first. Wait for my replies, then answer.">Up to 3 questions</button>
+            <button class="chip" type="button" data-set="Ask me questions one at a time until you have what you need, then answer.">One at a time</button>
+          </div>
+        </div>
+        <div class="tip"><b>In the workshop</b>When the AI replies with questions, answer them in the same chat. It will then use your answers to complete the task.</div>
+        <div class="nav"><button class="btn" type="button" data-go="4">Back</button><button class="btn primary" type="button" data-go="6">Next: Rate</button></div>
+      </section>
+
+      <!-- 6 RATE -->
+      <section class="step" data-k="6" id="step6" aria-labelledby="h6">
+        <span class="optional-tag">Booster</span>
+        <h2 id="h6">Ask the AI to rate its work</h2>
+        <p class="lede"><strong>Rate</strong> asks the AI to score its own output and say what could be improved. It’s a quick way to surface weak spots you can follow up on.</p>
+        <div class="ask">
+          <p>Ask yourself</p>
+          <ul>
+            <li>What does “good” look like for this task?</li>
+            <li>Which criteria matter most: accuracy, clarity, tone, completeness?</li>
+            <li>Should it just tell you what to improve, or improve it too?</li>
+          </ul>
+        </div>
+        <div class="field">
+          <label for="rate">Your rating request</label>
+          <span class="hint">Choose a starter or write your own.</span>
+          <textarea id="rate" data-field="rate" rows="2" placeholder="e.g. Give your answer a rating from 0 to 10, and indicate what could be improved."></textarea>
+          <div class="chips" data-set-target="rate">
+            <button class="chip" type="button" data-set="Then give your answer a rating from 0 to 10, and indicate what could be improved.">Rate 0–10 with improvements</button>
+            <button class="chip" type="button" data-set="Then rate your answer against my instructions above, and point out anything you missed.">Check against my instructions</button>
+            <button class="chip" type="button" data-set="Then rate your answer from 0 to 10. If it scores below 8, improve it and show the new version.">Rate, then improve</button>
+          </div>
+        </div>
+        <div class="tip"><b>Keep in mind</b>A high self-rating isn’t proof of quality. AI can be overconfident about its own work, so you still need to check the result yourself.</div>
+        <div class="nav"><button class="btn" type="button" data-go="5">Back</button><button class="btn primary" type="button" data-go="7">Next: Emotion</button></div>
+      </section>
+
+      <!-- 7 EMOTION -->
+      <section class="step" data-k="7" id="step7" aria-labelledby="h7">
+        <span class="optional-tag">Booster</span>
+        <h2 id="h7">Add an emotional cue</h2>
+        <p class="lede"><strong>Emotion</strong> adds a short line that signals the task matters or encourages care. Some research has found cues like this can improve the quality of responses.</p>
+        <div class="ask">
+          <p>Ask yourself</p>
+          <ul>
+            <li>Why does this task matter to you or to others?</li>
+            <li>Would a word of encouragement fit the tone of your prompt?</li>
+          </ul>
+        </div>
+        <div class="field">
+          <label for="emotion">Your emotional cue</label>
+          <span class="hint">Choose a starter or write your own.</span>
+          <textarea id="emotion" data-field="emotion" rows="2" placeholder="e.g. Try to really do your best. It’s important to me."></textarea>
+          <div class="chips" data-set-target="emotion">
+            <button class="chip" type="button" data-set="Breathe in, and breathe out. Try to really do your best. It’s important to me.">Breathe and do your best</button>
+            <button class="chip" type="button" data-set="This matters a lot to my students, so please take care to get it right.">It matters to my students</button>
+            <button class="chip" type="button" data-set="I really appreciate your help with this.">Appreciation</button>
+          </div>
+        </div>
+        <div class="tip"><b>Try it as an experiment</b>The evidence here is mixed, and newer AI models tend to respond more to clear instructions than to encouragement. Run your prompt with and without this line and compare the results.</div>
+        <div class="nav"><button class="btn" type="button" data-go="6">Back</button><button class="btn primary" type="button" data-go="8">Review my prompt</button></div>
+      </section>
+
+      <!-- 8 REVIEW -->
+      <section class="step" data-k="8" id="step8" aria-labelledby="h8">
+        <h2 id="h8">Your finished prompt</h2>
         <p class="lede">Check it reads well, then copy it into your AI tool of choice.</p>
         <div class="final" id="finalText" tabindex="0" aria-label="Finished prompt"></div>
         <div class="copy-row">
@@ -409,7 +507,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <div id="flags"></div>
         <div class="callout">
           <div><b>Before you paste this into an AI tool</b><span class="note">Make sure it holds nothing confidential, and know how you’ll verify and disclose the result.</span></div>
-          <button class="btn" type="button" data-go="6">Responsible use reminders</button>
+          <button class="btn" type="button" data-go="9">Responsible use reminders</button>
         </div>
         <p class="score" id="score"></p>
         <ul class="checks" id="checks"></ul>
@@ -417,16 +515,16 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
           <h3>After you send it</h3>
           <ul>
             <li>Read the response critically: is it accurate, complete and right for your audience?</li>
-            <li>If it misses, don’t start over. Reply with what to change, and note which PREP part was too thin.</li>
+            <li>If it misses, don’t start over. Reply with what to change, and note which PREPARE step was too thin.</li>
             <li>Save prompts that work well and reuse them as templates.</li>
           </ul>
         </div>
-        <div class="nav"><button class="btn" type="button" data-go="4">Back</button><button class="btn primary" type="button" data-go="6">Next: Responsible use reminders</button></div>
+        <div class="nav"><button class="btn" type="button" data-go="7">Back</button><button class="btn primary" type="button" data-go="9">Next: Responsible use reminders</button></div>
       </section>
 
-      <!-- STEP 6: RESPONSIBLE USE -->
-      <section class="step" data-k="6" id="step6" aria-labelledby="h6">
-        <h2 id="h6">Use AI responsibly</h2>
+      <!-- 9 RESPONSIBLE USE -->
+      <section class="step" data-k="9" id="step9" aria-labelledby="h9">
+        <h2 id="h9">Use AI responsibly</h2>
         <p class="lede">A well-built prompt is only half the job. Keep these in mind every time you use AI.</p>
         <ul class="reminders">
           <li><b>Keep confidential information out</b>Don’t paste student records or grades (protected under FERPA), unpublished research, or manuscripts and proposals you’re reviewing into public AI tools. Use your institution’s approved tools instead.</li>
@@ -436,7 +534,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
           <li><b>Own the final result</b>AI is an assistant, not an author. You’re responsible for anything you share, submit or publish.</li>
         </ul>
         <p class="note">AI policies can change quickly. Be sure to check in on your institution’s or workplace’s guidance.</p>
-        <div class="nav"><button class="btn" type="button" data-go="5">Back to my prompt</button><button class="btn" type="button" data-go="1">Edit from the start</button></div>
+        <div class="nav"><button class="btn" type="button" data-go="8">Back to my prompt</button><button class="btn" type="button" data-go="1">Edit from the start</button></div>
       </section>
 
     </main>
@@ -447,36 +545,42 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <span class="meta" id="wordCount">0 words</span>
       </div>
       <div class="segs" id="segs" tabindex="0" role="region" aria-label="Prompt preview text"></div>
-      <div class="legend">
+      <div class="legend" aria-hidden="true">
         <span><i style="background:var(--c1)"></i>Prompt</span>
         <span><i style="background:var(--c2)"></i>Role</span>
         <span><i style="background:var(--c3)"></i>Explicit</span>
         <span><i style="background:var(--c4)"></i>Parameters</span>
+        <span><i style="background:var(--c5)"></i>Ask</span>
+        <span><i style="background:var(--c6)"></i>Rate</span>
+        <span><i style="background:var(--c7)"></i>Emotion</span>
       </div>
     </aside>
   </div>
 
   <footer class="foot">
+    <p>Based on the PREPARE framework by Dan Fitzpatrick. Sources: <a href="https://aipioneers.org/the-prepare-framework/" target="_blank" rel="noopener noreferrer">“The Prepare Framework,” AI Pioneers<span class="sr"> (opens in a new tab)</span></a> and <a href="https://guides.libs.uga.edu/ai/prompts" target="_blank" rel="noopener noreferrer">“Writing Prompts,” Introduction to AI Literacy, University of Georgia Libraries<span class="sr"> (opens in a new tab)</span></a>.</p>
     <p>Found an issue or have feedback on this tool? <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-CVb8Q-8_mr1wV1ZDsgk6maMVXY3ULeQTmvFCL4qBv4G5Gw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">Share it using this form<span class="sr"> (opens in a new tab)</span></a>.</p>
   </footer>
 </div>
 
 <script>
 (function(){
-  const KEY = 'prep-builder-v1';
-  const blank = () => ({ step:1, task:'', purpose:'', role:'', roleExtra:'', context:'', instructions:['',''], avoid:'', format:'', length:'', tones:[], audience:'', extra:'', clarify:false, resp:{} });
+  const KEY = 'prepare-builder-v1';
+  const NAMES = {1:'Prompt',2:'Role',3:'Explicit',4:'Parameters',5:'Ask',6:'Rate',7:'Emotion'};
+  const blank = () => ({ step:1, task:'', purpose:'', role:'', roleExtra:'', context:'', instructions:['',''], avoid:'', thinking:false, format:'', length:'', tones:[], audience:'', extra:'', ask:'', rate:'', emotion:'' });
 
   const EXAMPLES = {
-    faculty: { task:'Create a grading rubric for the final research paper in my graduate seminar on qualitative research methods.', purpose:'so students know exactly how they’ll be assessed and I can give consistent, fair feedback across the cohort', role:'an experienced graduate faculty member and assessment specialist who has supervised many master’s and doctoral theses', roleExtra:'graduate-level learning outcomes, constructive alignment, and the standards of peer-reviewed journals in the social sciences', context:'The paper is 6,000–8,000 words and worth 50% of the course grade. Students are first-year master’s and PhD students designing an original qualitative study. Course outcomes: justify a methodology, design an ethical data collection plan, and critically engage with the literature.', instructions:['Use 5 criteria aligned to the course learning outcomes','Describe four performance levels: Exemplary, Proficient, Developing, Insufficient','Assign a point weighting to each criterion, totalling 100 points','Include a criterion for scholarly writing and APA 7th edition citation','Write descriptors that distinguish graduate-level critical thinking from summary'], avoid:'vague descriptors like “good” or “adequate” without saying what they look like', format:'a table with criteria as rows and performance levels as columns', length:'fits on two pages', tones:['professional','formal'], audience:'graduate students, written so they can self-assess before submitting', extra:'After the table, add 3 sentences I can use to introduce the rubric in the syllabus', clarify:true },
-    lesson: { task:'Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class.', purpose:'so students can explain the process in their own words by the end of the lesson', role:'an experienced secondary science teacher who makes abstract ideas concrete', roleExtra:'active learning strategies and common student misconceptions about how plants get food', context:'Mixed-ability class of 28; two students are learning English as an additional language. They know plants need light and water but haven’t studied cells yet.', instructions:['Open with a hook question that gets students thinking','Include one hands-on or visual activity','Address the misconception that plants get their food from the soil','End with a 3-question exit ticket','Add a short support note for EAL students'], avoid:'the full chemical equation, and anything that needs printing', format:'a table with columns for time, activity, and resources, followed by the exit ticket', length:'no more than one page', tones:['encouraging','concise'], audience:'written for a teacher to follow; any student-facing text at a 12-year-old reading level', extra:'Use UK spelling', clarify:false },
-    email: { task:'Write a reply to a customer whose order arrived two weeks late and damaged.', purpose:'to apologise, fix the problem, and keep them as a customer', role:'a friendly, professional customer service manager at a small online homeware shop', roleExtra:'service recovery best practice', context:'The customer, Priya, ordered a ceramic lamp. A courier delay caused the lateness. We can send a free replacement by express delivery or give a full refund.', instructions:['Apologise sincerely without blaming the courier','Offer both options and ask which she prefers','Include a 15% discount code: SORRY15','Close with a direct contact name and phone number placeholder'], avoid:'corporate jargon and phrases like “we apologise for any inconvenience”', format:'email with a subject line', length:'under 150 words', tones:['friendly','professional'], audience:'', extra:'', clarify:false },
-    summary: { task:'Summarise the meeting notes I paste below into a short update for the wider team.', purpose:'so people who missed the meeting know what was decided and what they need to do', role:'an expert editor who writes in plain, clear English', roleExtra:'', context:'This was our monthly project check-in. Readers are busy and will skim on their phones.', instructions:['Start with the 2–3 key decisions','List action items with the owner’s name and due date','Flag anything still unresolved','Paste notes here: [PASTE NOTES]'], avoid:'minor discussion points and who said what', format:'short headings with bulleted lists', length:'under 200 words', tones:['concise','neutral'], audience:'the wider project team', extra:'', clarify:true }
+    faculty: { task:'Create a grading rubric for the final research paper in my graduate seminar on qualitative research methods.', purpose:'so students know exactly how they’ll be assessed and I can give consistent, fair feedback across the cohort', role:'an experienced graduate faculty member and assessment specialist who has supervised many master’s and doctoral theses', roleExtra:'graduate-level learning outcomes, constructive alignment, and the standards of peer-reviewed journals in the social sciences', context:'The paper is 6,000–8,000 words and worth 50% of the course grade. Students are first-year master’s and PhD students designing an original qualitative study. Course outcomes: justify a methodology, design an ethical data collection plan, and critically engage with the literature.', instructions:['Use 5 criteria aligned to the course learning outcomes','Describe four performance levels: Exemplary, Proficient, Developing, Insufficient','Assign a point weighting to each criterion, totalling 100 points','Include a criterion for scholarly writing and APA 7th edition citation','Write descriptors that distinguish graduate-level critical thinking from summary'], avoid:'vague descriptors like “good” or “adequate” without saying what they look like', thinking:false, format:'a table with criteria as rows and performance levels as columns', length:'fits on two pages', tones:['professional','formal'], audience:'graduate students, written so they can self-assess before submitting', extra:'After the table, add 3 sentences I can use to introduce the rubric in the syllabus', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then give your rubric a rating from 0 to 10 for clarity and fairness to students, and indicate what could be improved.', emotion:'This matters a lot to my students, so please take care to get it right.' },
+    lesson: { task:'Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class.', purpose:'so students can explain the process in their own words by the end of the lesson', role:'an experienced secondary science teacher who makes abstract ideas concrete', roleExtra:'active learning strategies and common student misconceptions about how plants get food', context:'Mixed-ability class of 28; two students are learning English as an additional language. They know plants need light and water but haven’t studied cells yet.', instructions:['Open with a hook question that gets students thinking','Include one hands-on or visual activity','Address the misconception that plants get their food from the soil','End with a 3-question exit ticket','Add a short support note for EAL students'], avoid:'the full chemical equation, and anything that needs printing', thinking:true, format:'a table with columns for time, activity, and resources, followed by the exit ticket', length:'no more than one page', tones:['encouraging','concise'], audience:'written for a teacher to follow; any student-facing text at a 12-year-old reading level', extra:'Use UK spelling', ask:'Ask me some clarification questions first, and then answer.', rate:'Then give your answer a rating from 0 to 10, and indicate what could be improved.', emotion:'Breathe in, and breathe out. Try to really do your best. It’s important to me.' },
+    email: { task:'Write a reply to a customer whose order arrived two weeks late and damaged.', purpose:'to apologise, fix the problem, and keep them as a customer', role:'a friendly, professional customer service manager at a small online homeware shop', roleExtra:'service recovery best practice', context:'The customer, Priya, ordered a ceramic lamp. A courier delay caused the lateness. We can send a free replacement by express delivery or give a full refund.', instructions:['Apologise sincerely without blaming the courier','Offer both options and ask which she prefers','Include a 15% discount code: SORRY15','Close with a direct contact name and phone number placeholder'], avoid:'corporate jargon and phrases like “we apologise for any inconvenience”', thinking:false, format:'email with a subject line', length:'under 150 words', tones:['friendly','professional'], audience:'', extra:'', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then rate your answer against my instructions above, and point out anything you missed.', emotion:'Keeping this customer matters a lot to our small business. I really appreciate your help with this.' },
+    summary: { task:'Summarise the meeting notes I paste below into a short update for the wider team.', purpose:'so people who missed the meeting know what was decided and what they need to do', role:'an expert editor who writes in plain, clear English', roleExtra:'', context:'This was our monthly project check-in. Readers are busy and will skim on their phones.', instructions:['Start with the 2–3 key decisions','List action items with the owner’s name and due date','Flag anything still unresolved','Paste notes here: [PASTE NOTES]'], avoid:'minor discussion points and who said what', thinking:false, format:'short headings with bulleted lists', length:'under 200 words', tones:['concise'], audience:'the wider project team', extra:'', ask:'Ask me some clarification questions first, and then answer.', rate:'Then rate your answer from 0 to 10. If it scores below 8, improve it and show the new version.', emotion:'I really appreciate your help with this.' }
   };
 
   let S;
   try { S = JSON.parse(localStorage.getItem(KEY)) || blank(); } catch(e) { S = blank(); }
   S = Object.assign(blank(), S);
   if (!Array.isArray(S.instructions) || !S.instructions.length) S.instructions = [''];
+  if (!Array.isArray(S.tones)) S.tones = [];
 
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
   const $ = (s, r=document) => r.querySelector(s);
@@ -489,7 +593,6 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
   /* ---------- build prompt ---------- */
   function segments(){
     const out = [];
-    // P
     let p = '';
     if (clean(S.task)) {
       p = clean(S.task);
@@ -497,30 +600,34 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       p = endPunct(p);
     }
     out.push({k:1, text:p, empty:'Your request appears here.'});
-    // R
-    let r = '';
+
+    const r = [];
     if (clean(S.role)) {
-      r = 'Act as ' + clean(S.role).replace(/^(act as|you are)\s+/i,'').replace(/[.]+$/,'') + '.';
-      if (clean(S.roleExtra)) r += ' Draw on ' + clean(S.roleExtra).replace(/[.]+$/,'') + '.';
+      let s = 'Act as ' + clean(S.role).replace(/^(act as|you are|you’re|you're)\s+/i,'').replace(/[.]+$/,'') + '.';
+      if (clean(S.roleExtra)) s += ' Draw on ' + clean(S.roleExtra).replace(/[.]+$/,'') + '.';
+      r.push(s);
     }
-    out.push({k:2, text:r, empty:'The role the AI should take appears here.'});
-    // E
+    if (clean(S.context)) r.push('Context: ' + endPunct(clean(S.context)));
+    out.push({k:2, text:r.join('\n\n'), empty:'The AI’s role and your context appear here.'});
+
     const e = [];
-    if (clean(S.context)) e.push('Context: ' + endPunct(clean(S.context)));
     const ins = S.instructions.map(clean).filter(Boolean);
     if (ins.length) e.push('Instructions:\n' + ins.map(i => '- ' + cap(i)).join('\n'));
     if (clean(S.avoid)) e.push('Avoid: ' + endPunct(clean(S.avoid)));
-    out.push({k:3, text:e.join('\n\n'), empty:'Context and detailed instructions appear here.'});
-    // P
+    if (S.thinking) e.push('Take this task one step at a time, and explain your thinking steps.');
+    out.push({k:3, text:e.join('\n\n'), empty:'Your detailed instructions appear here.'});
+
     const pr = [];
     if (clean(S.format)) pr.push('- Format: ' + clean(S.format));
     if (clean(S.length)) pr.push('- Length: ' + clean(S.length));
     if (S.tones.length) pr.push('- Tone: ' + S.tones.join(', '));
     if (clean(S.audience)) pr.push('- Audience: ' + clean(S.audience));
     clean(S.extra).split('\n').map(clean).filter(Boolean).forEach(x => pr.push('- ' + cap(x)));
-    let pt = pr.length ? 'Output requirements:\n' + pr.join('\n') : '';
-    if (S.clarify) pt += (pt ? '\n\n' : '') + 'Before you start, ask me any questions you need answered to do this well.';
-    out.push({k:4, text:pt, empty:'Format, length, tone and audience appear here.'});
+    out.push({k:4, text: pr.length ? 'Output requirements:\n' + pr.join('\n') : '', empty:'Format, length, tone and audience appear here.'});
+
+    out.push({k:5, text: clean(S.ask) ? endPunct(clean(S.ask)) : '', empty:'Optional: a request for clarifying questions.'});
+    out.push({k:6, text: clean(S.rate) ? endPunct(clean(S.rate)) : '', empty:'Optional: a request to rate the answer.'});
+    out.push({k:7, text: clean(S.emotion) ? endPunct(clean(S.emotion)) : '', empty:'Optional: an emotional cue.'});
     return out;
   }
   const fullPrompt = () => segments().map(s => s.text).filter(Boolean).join('\n\n');
@@ -529,8 +636,11 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
   function done(k){
     if (k===1) return words(S.task) >= 4;
     if (k===2) return words(S.role) >= 2;
-    if (k===3) return S.instructions.map(clean).filter(Boolean).length >= 1 || words(S.context) >= 5;
+    if (k===3) return S.instructions.map(clean).filter(Boolean).length >= 1;
     if (k===4) return [clean(S.format), clean(S.length), S.tones.length ? 'x':'', clean(S.audience)].filter(Boolean).length >= 2;
+    if (k===5) return words(S.ask) >= 3;
+    if (k===6) return words(S.rate) >= 3;
+    if (k===7) return words(S.emotion) >= 3;
     return false;
   }
 
@@ -538,22 +648,22 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
     {k:1, t:'The request is specific', d:'Aim for at least 8 words that name the task and topic.', test:() => words(S.task) >= 8},
     {k:1, t:'The goal is clear', d:'Say why you need it, so the AI can make good choices.', test:() => words(S.purpose) >= 3 || /\b(so that|so |in order to|for )/i.test(S.task)},
     {k:2, t:'The role is more than a job title', d:'Add experience, setting or a perspective.', test:() => words(S.role) >= 4},
-    {k:3, t:'Background is included', d:'Share what the AI can’t know about your situation.', test:() => words(S.context) >= 8},
+    {k:2, t:'Context is included', d:'Share what the AI can’t know about your situation.', test:() => words(S.context) >= 8},
     {k:3, t:'At least two explicit instructions', d:'List what the answer must include or do.', test:() => S.instructions.map(clean).filter(Boolean).length >= 2},
     {k:4, t:'Format is set', d:'Say what shape the output should take.', test:() => !!clean(S.format)},
     {k:4, t:'Length is set', d:'Give a word count, page limit or number of items.', test:() => !!clean(S.length)},
-    {k:4, t:'Tone or audience is set', d:'Say who it’s for or how it should sound.', test:() => S.tones.length > 0 || !!clean(S.audience)}
+    {k:4, t:'Tone or audience is set', d:'Say who it’s for or how it should sound.', test:() => S.tones.length > 0 || !!clean(S.audience)},
+    {k:5, t:'The AI is invited to ask questions', d:'Optional, but it often catches missing details.', test:() => words(S.ask) >= 3},
+    {k:6, t:'The AI is asked to rate its work', d:'Optional, but it helps surface weak spots.', test:() => words(S.rate) >= 3}
   ];
 
   /* ---------- render ---------- */
   function renderPreview(){
-    const segs = segments();
     const box = $('#segs'); box.innerHTML = '';
-    segs.forEach(s => {
+    segments().forEach(s => {
       const d = document.createElement('div');
       d.className = 'seg k' + s.k + (s.text ? '' : ' empty') + (S.step === s.k ? ' is-current' : '');
-      const lab = document.createElement('span'); lab.className = 'seg-label';
-      lab.textContent = ({1:'Prompt',2:'Role',3:'Explicit',4:'Parameters'})[s.k];
+      const lab = document.createElement('span'); lab.className = 'seg-label'; lab.textContent = NAMES[s.k];
       d.appendChild(lab);
       d.appendChild(document.createTextNode(s.text || s.empty));
       box.appendChild(d);
@@ -565,9 +675,9 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       b.classList.toggle('done', ok);
       const st = b.querySelector('.state');
       if (ok) st.innerHTML = 'Done <span class="check" aria-hidden="true">✔</span>';
-      else st.textContent = S.step === k ? 'In progress' : 'To do';
+      else st.textContent = S.step === k ? 'In progress' : (k >= 5 ? 'Optional' : 'To do');
     });
-    if (S.step === 5) renderReview();
+    if (S.step === 8) renderReview();
   }
 
   function renderReview(){
@@ -580,61 +690,14 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       const ok = c.test(); if (ok) passed++;
       const li = document.createElement('li'); li.className = ok ? 'ok' : '';
       li.innerHTML = '<span class="mark" aria-hidden="true">' + (ok ? '✓' : '') + '</span><div class="txt"><b></b><span></span></div>';
-      li.querySelector('b').textContent = c.t;
+      li.querySelector('b').textContent = NAMES[c.k] + ': ' + c.t;
       li.querySelector('.txt span').textContent = ok ? 'Looks good.' : c.d;
-      if (!ok) { const b = document.createElement('button'); b.type='button'; b.textContent = 'Fix'; b.setAttribute('aria-label', 'Fix: ' + c.t); b.addEventListener('click', () => go(c.k)); li.appendChild(b); }
+      if (!ok) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Fix'; b.setAttribute('aria-label', 'Fix: ' + c.t); b.addEventListener('click', () => go(c.k)); li.appendChild(b); }
       ul.appendChild(li);
     });
     $('#score').textContent = passed === CHECKS.length ? 'All ' + CHECKS.length + ' checks passed. This is a strong prompt.' : passed + ' of ' + CHECKS.length + ' checks passed';
   }
 
-  function renderInstr(){
-    const list = $('#instrList'); list.innerHTML = '';
-    S.instructions.forEach((v, i) => {
-      const row = document.createElement('div'); row.className = 'row';
-      row.innerHTML = '<span class="n" aria-hidden="true">' + (i+1) + '.</span><input type="text"><button class="icon-btn" type="button">×</button>';
-      const inp = row.querySelector('input');
-      inp.value = v;
-      inp.setAttribute('aria-label', 'Instruction ' + (i+1));
-      inp.placeholder = i === 0 ? 'e.g. Open with a hook question' : (i === 1 ? 'e.g. End with a 3-question exit ticket' : 'Another instruction');
-      inp.addEventListener('input', () => { S.instructions[i] = inp.value; save(); renderPreview(); });
-      inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); S.instructions.splice(i+1, 0, ''); save(); renderInstr(); $$('#instrList input')[i+1].focus(); } });
-      const del = row.querySelector('button');
-      del.setAttribute('aria-label', 'Remove instruction ' + (i+1));
-      del.addEventListener('click', () => { S.instructions.splice(i,1); if (!S.instructions.length) S.instructions = ['']; save(); renderInstr(); renderPreview(); });
-      list.appendChild(row);
-    });
-  }
-
-  function syncFields(){
-    $$('[data-field]').forEach(el => {
-      const f = el.dataset.field;
-      if (el.type === 'checkbox') el.checked = !!S[f]; else el.value = S[f] || '';
-    });
-    $$('#toneChips .chip').forEach(c => c.setAttribute('aria-pressed', S.tones.includes(c.dataset.tone)));
-    syncSetChips();
-    renderInstr();
-  }
-  function syncSetChips(){
-    $$('[data-set-target]').forEach(g => {
-      const v = clean(S[g.dataset.setTarget]);
-      $$('.chip', g).forEach(c => c.setAttribute('aria-pressed', c.dataset.set === v));
-    });
-  }
-
-  function go(n, focus = true){
-    S.step = n; save();
-    $$('.step').forEach(s => s.classList.toggle('active', +s.id.replace('step','') === n));
-    $$('.letter').forEach(b => { const on = +b.dataset.go === n; b.classList.toggle('current', on); b.setAttribute('aria-current', on ? 'step' : 'false'); });
-    renderPreview();
-    if (focus) {
-      const h = $('#step' + n + ' h2'); h.setAttribute('tabindex','-1'); h.focus({preventScroll:true});
-      const nav = $('.letters'); const y = nav.getBoundingClientRect().top + window.scrollY - 12;
-      if (window.scrollY > y) window.scrollTo({top:y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
-    }
-  }
-
-  /* ---------- responsible use ---------- */
   function renderFlags(){
     const t = fullPrompt(), f = [];
     if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(t)) f.push('It contains an email address. Remove personal contact details before sending.');
@@ -648,6 +711,52 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
     d.innerHTML = '<b>Check before sending</b><ul></ul>';
     f.forEach(x => { const li = document.createElement('li'); li.textContent = x; d.querySelector('ul').appendChild(li); });
     box.appendChild(d);
+  }
+
+  function renderInstr(){
+    const list = $('#instrList'); list.innerHTML = '';
+    S.instructions.forEach((v, i) => {
+      const row = document.createElement('div'); row.className = 'row';
+      row.innerHTML = '<span class="n" aria-hidden="true">' + (i+1) + '.</span><input type="text"><button class="icon-btn" type="button">×</button>';
+      const inp = row.querySelector('input');
+      inp.value = v;
+      inp.setAttribute('aria-label', 'Instruction ' + (i+1));
+      inp.placeholder = i === 0 ? 'e.g. Mention how AI can support personalised learning' : (i === 1 ? 'e.g. End with three questions for discussion' : 'Another instruction');
+      inp.addEventListener('input', () => { S.instructions[i] = inp.value; save(); renderPreview(); });
+      inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); S.instructions.splice(i+1, 0, ''); save(); renderInstr(); $$('#instrList input')[i+1].focus(); } });
+      const del = row.querySelector('button');
+      del.setAttribute('aria-label', 'Remove instruction ' + (i+1));
+      del.addEventListener('click', () => { S.instructions.splice(i,1); if (!S.instructions.length) S.instructions = ['']; save(); renderInstr(); renderPreview(); });
+      list.appendChild(row);
+    });
+  }
+
+  function syncSetChips(){
+    $$('[data-set-target]').forEach(g => {
+      const v = clean(S[g.dataset.setTarget]);
+      $$('.chip', g).forEach(c => c.setAttribute('aria-pressed', c.dataset.set === v));
+    });
+  }
+  function syncFields(){
+    $$('[data-field]').forEach(el => {
+      const f = el.dataset.field;
+      if (el.type === 'checkbox') el.checked = !!S[f]; else el.value = S[f] || '';
+    });
+    $$('#toneChips .chip').forEach(c => c.setAttribute('aria-pressed', S.tones.includes(c.dataset.tone)));
+    syncSetChips();
+    renderInstr();
+  }
+
+  function go(n, focus = true){
+    S.step = n; save();
+    $$('.step').forEach(s => s.classList.toggle('active', s.id === 'step' + n));
+    $$('.letter').forEach(b => { const on = +b.dataset.go === n; b.classList.toggle('current', on); b.setAttribute('aria-current', on ? 'step' : 'false'); });
+    renderPreview();
+    if (focus) {
+      const h = $('#step' + n + ' h2'); h.setAttribute('tabindex','-1'); h.focus({preventScroll:true});
+      const nav = $('.steps-nav'); const y = nav.getBoundingClientRect().top + window.scrollY - 12;
+      if (window.scrollY > y) window.scrollTo({top:y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    }
   }
 
   /* ---------- events ---------- */
@@ -668,8 +777,6 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       t.value = t.value.slice(0, s) + word + t.value.slice(e);
     }
     t.dispatchEvent(new Event('input')); t.focus();
-    const end = clean(t.value) === clean(word) ? t.value.length : (t.selectionStart);
-    try { t.setSelectionRange(end, end); } catch(e){}
   }));
 
   $$('[data-set]').forEach(c => c.addEventListener('click', () => {
@@ -703,13 +810,11 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
     $('#announce').textContent = 'All fields cleared. Starting over at Prompt.';
   });
 
-  // text size
   let large = false; try { large = localStorage.getItem(KEY + '-large') === '1'; } catch(e){}
   const applySize = () => { document.documentElement.classList.toggle('large', large); $('#sizeBtn').setAttribute('aria-pressed', large); };
   $('#sizeBtn').addEventListener('click', () => { large = !large; try { localStorage.setItem(KEY + '-large', large ? '1':'0'); } catch(e){} applySize(); });
   applySize();
 
-  // copy
   $('#copyBtn').addEventListener('click', async () => {
     const text = fullPrompt(); const st = $('#copyStatus');
     if (!text) { st.textContent = 'Add your request first.'; return; }
@@ -726,7 +831,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
   });
 
   syncFields();
-  go(S.step || 1, false);
+  go(S.step >= 1 && S.step <= 9 ? S.step : 1, false);
 })();
 </script>
 </body>
