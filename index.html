@@ -4,37 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Build a Better Prompt</title>
+<script>try{if(localStorage.getItem('rtrt-mode')==='light')document.documentElement.dataset.mode='light'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F1F3F6; --surface:#FFFFFF; --ink:#17202B; --muted:#586374; --line:#D6DCE4; --field:#FAFBFC; --edge:#7E8898;
-  --c1:#2B50D6; --c2:#8A3FA0; --c3:#0D7C70; --c4:#8A4E00; --c5:#A3305A; --c6:#4D6A0F; --c7:#0A6A90;
-  --t1:#E6EBFC; --t2:#F3E7F6; --t3:#DFF2EF; --t4:#FAEDD8; --t5:#F8E6EE; --t6:#ECF2DE; --t7:#DFEFF6;
-  --ok:#1F7A3E; --focus:#2B50D6;
+  /* Default: midnight blue, matching Right Tool, Right Task */
+  --bg:#0B1733; --surface:#13224A; --ink:#EEF2FA; --muted:#B6C2DC; --line:#25365F; --field:#0F1C3F; --edge:#7F90B8;
+  --c1:#8DB0FF; --c2:#E98BFF; --c3:#3DD9FF; --c4:#FFB13D; --c5:#FF6FB2; --c6:#C6E66B; --c7:#FF8A6B;
+  --t1:#1C2B5E; --t2:#2E2156; --t3:#0E3447; --t4:#3A2C08; --t5:#3D1A3E; --t6:#25350F; --t7:#3D2118;
+  --ok:#4CEB9B; --focus:#B9A6FF;
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", Verdana, system-ui, sans-serif;
-  color-scheme:light;
+  color-scheme:dark;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#11151B; --surface:#1A2029; --ink:#E7EBF1; --muted:#9BA6B5; --line:#2D3643; --field:#151A22; --edge:#6E7A8B;
-    --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C; --c5:#F07AA6; --c6:#A6CF5C; --c7:#5CC2E8;
-    --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F; --t5:#36182A; --t6:#222E12; --t7:#10293A;
-    --ok:#5BD08A; --focus:#8099FF;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#11151B; --surface:#1A2029; --ink:#E7EBF1; --muted:#9BA6B5; --line:#2D3643; --field:#151A22; --edge:#6E7A8B;
-  --c1:#8099FF; --c2:#CF8DE0; --c3:#4CC4B3; --c4:#E9A84C; --c5:#F07AA6; --c6:#A6CF5C; --c7:#5CC2E8;
-  --t1:#1D2645; --t2:#2A1E33; --t3:#14302C; --t4:#33270F; --t5:#36182A; --t6:#222E12; --t7:#10293A;
-  --ok:#5BD08A; --focus:#8099FF;
-  color-scheme:dark;
+/* Light palette: only when the visitor turns on Light mode with the toggle. */
+:root[data-mode="light"]{
+  --bg:#F1F3F6; --surface:#FFFFFF; --ink:#17202B; --muted:#586374; --line:#D6DCE4; --field:#FAFBFC; --edge:#7E8898;
+  --c1:#2B50D6; --c2:#8A3FA0; --c3:#0D7C70; --c4:#8A4E00; --c5:#A3305A; --c6:#4D6A0F; --c7:#0A6A90;
+  --t1:#E6EBFC; --t2:#F3E7F6; --t3:#DFF2EF; --t4:#FAEDD8; --t5:#F8E6EE; --t6:#ECF2DE; --t7:#DFEFF6;
+  --ok:#1F7A3E; --focus:#2B50D6;
+  color-scheme:light;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px); font-size:17px}
@@ -51,6 +45,10 @@ button,input,textarea,select{font:inherit; color:inherit}
 .top > div:first-child{flex:1 1 300px; min-width:0}
 .top h1{font-family:var(--display); font-weight:700; font-size:1.35rem; margin:0; letter-spacing:-.01em}
 .top p{margin:.15rem 0 0; color:var(--muted); max-width:60ch}
+.top .tool-link{margin-top:.45rem}
+.tool-link a{color:var(--c1); font-weight:700; text-underline-offset:3px}
+.tool-link a:hover{text-decoration-thickness:2px}
+.inline-link{color:var(--c1); font-weight:700; text-underline-offset:3px}
 .tools{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; justify-content:flex-end; margin-left:auto}
 #exampleSel{max-width:15rem; text-overflow:ellipsis}
 .btn{border:1px solid var(--edge); background:var(--surface); border-radius:999px; padding:.45rem .95rem; cursor:pointer; font-size:.9rem; line-height:1.2}
@@ -202,6 +200,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
     <div>
       <h1>Build a Better Prompt</h1>
       <p>Build a strong prompt one step at a time. The first four steps (PREP) build your prompt; the last three (ARE) make it even better.</p>
+      <p class="tool-link"><a href="https://ceb2240-lab.github.io/Right-Tool/" target="_blank" rel="noopener noreferrer">Not sure which AI tool to use? <span aria-hidden="true">→</span><span class="sr"> Open the Right Tool, Right Task guide (opens in a new tab)</span></a></p>
     </div>
     <div class="tools">
       <label class="sr" for="exampleSel">View a prompt example</label>
@@ -212,6 +211,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <option value="email">Business: customer email</option>
         <option value="summary">Office: meeting summary</option>
       </select>
+      <button class="btn" id="modeBtn" type="button"><span class="ti" aria-hidden="true">☀</span> <span class="tl">Light mode</span></button>
       <button class="btn" id="sizeBtn" type="button" aria-pressed="false">Larger text</button>
       <button class="btn" id="resetBtn" type="button">Start over</button>
     </div>
@@ -498,7 +498,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       <!-- 8 REVIEW -->
       <section class="step" data-k="8" id="step8" aria-labelledby="h8">
         <h2 id="h8">Your finished prompt</h2>
-        <p class="lede">Check it reads well, then copy it into your AI tool of choice.</p>
+        <p class="lede">Check it reads well, then copy it into your AI tool of choice. Not sure which one? <a class="inline-link" href="https://ceb2240-lab.github.io/Right-Tool/" target="_blank" rel="noopener noreferrer">Try the Right Tool, Right Task guide<span class="sr"> (opens in a new tab)</span></a>.</p>
         <div class="final" id="finalText" tabindex="0" aria-label="Finished prompt"></div>
         <div class="copy-row">
           <button class="btn primary" type="button" id="copyBtn">Copy prompt</button>
@@ -814,6 +814,21 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
   const applySize = () => { document.documentElement.classList.toggle('large', large); $('#sizeBtn').setAttribute('aria-pressed', large); };
   $('#sizeBtn').addEventListener('click', () => { large = !large; try { localStorage.setItem(KEY + '-large', large ? '1':'0'); } catch(e){} applySize(); });
   applySize();
+
+  // light/dark mode: midnight blue by default; shares the visitor's choice with Right Tool, Right Task
+  const root = document.documentElement, mb = $('#modeBtn');
+  const isLight = () => root.dataset.mode === 'light';
+  const syncMode = () => {
+    mb.querySelector('.ti').textContent = isLight() ? '☾' : '☀';
+    mb.querySelector('.tl').textContent = isLight() ? 'Dark mode' : 'Light mode';
+  };
+  syncMode();
+  mb.addEventListener('click', () => {
+    if (isLight()) delete root.dataset.mode; else root.dataset.mode = 'light';
+    try { localStorage.setItem('rtrt-mode', isLight() ? 'light' : 'dark'); } catch(e){}
+    syncMode();
+    $('#announce').textContent = isLight() ? 'Light mode on. Button now switches to dark mode.' : 'Dark mode on. Button now switches to light mode.';
+  });
 
   $('#copyBtn').addEventListener('click', async () => {
     const text = fullPrompt(); const st = $('#copyStatus');
