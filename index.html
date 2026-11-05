@@ -135,6 +135,9 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 .pair .weak{background:var(--field); border:1.5px dashed var(--line)}
 .pair .strong{background:var(--kt)}
 .pair b{display:block; font-size:.82rem; margin-bottom:.2rem; color:var(--muted)}
+.learn ul{margin:.7rem 0 .2rem; padding-left:1.15rem; max-width:62ch}
+.learn li{margin:.45rem 0}
+.learn li b{color:var(--ink)}
 
 .toggle{display:flex; gap:.7rem; align-items:flex-start; cursor:pointer; background:var(--field); border:1.5px solid var(--edge); border-radius:10px; padding:.7rem .85rem}
 .toggle input{width:1.15rem; height:1.15rem; margin-top:.2rem; accent-color:var(--kc); flex:none}
@@ -225,7 +228,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
       <button class="letter" data-k="4" data-go="4" type="button"><span class="glyph" aria-hidden="true">P</span><span class="word">Parameters</span><span class="state">To do</span></button>
       <button class="letter" data-k="5" data-go="5" type="button"><span class="glyph" aria-hidden="true">A</span><span class="word">Ask</span><span class="state">To do</span></button>
       <button class="letter" data-k="6" data-go="6" type="button"><span class="glyph" aria-hidden="true">R</span><span class="word">Rate</span><span class="state">To do</span></button>
-      <button class="letter" data-k="7" data-go="7" type="button"><span class="glyph" aria-hidden="true">E</span><span class="word">Emotion</span><span class="state">To do</span></button>
+      <button class="letter" data-k="7" data-go="7" type="button"><span class="glyph" aria-hidden="true">E</span><span class="word">Evaluate</span><span class="state">To do</span></button>
     </div>
     <div class="after">
       <button class="letter review" data-go="8" type="button"><span class="word">Review &amp; copy</span></button>
@@ -466,32 +469,42 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
           </div>
         </div>
         <div class="tip"><b>Keep in mind</b>A high self-rating isn’t proof of quality. AI can be overconfident about its own work, so you still need to check the result yourself.</div>
-        <div class="nav"><button class="btn" type="button" data-go="5">Back</button><button class="btn primary" type="button" data-go="7">Next: Emotion</button></div>
+        <div class="nav"><button class="btn" type="button" data-go="5">Back</button><button class="btn primary" type="button" data-go="7">Next: Evaluate</button></div>
       </section>
 
-      <!-- 7 EMOTION -->
+      <!-- 7 EVALUATE -->
       <section class="step" data-k="7" id="step7" aria-labelledby="h7">
         <span class="optional-tag">Booster</span>
-        <h2 id="h7">Add an emotional cue</h2>
-        <p class="lede"><strong>Emotion</strong> adds a short line that signals the task matters or encourages care. Some research has found cues like this can improve the quality of responses.</p>
+        <h2 id="h7">Evaluate the stakes</h2>
+        <p class="lede"><strong>Evaluate</strong> how important this task is, and tell the AI what matters most. Knowing the stakes helps it decide how careful, thorough or polished to be.</p>
         <div class="ask">
           <p>Ask yourself</p>
           <ul>
-            <li>Why does this task matter to you or to others?</li>
-            <li>Would a word of encouragement fit the tone of your prompt?</li>
+            <li>Who will see or rely on this, and what happens if it’s wrong?</li>
+            <li>Is this a quick draft or a finished piece?</li>
+            <li>What matters most: accuracy, speed, polish, tone or caution?</li>
           </ul>
         </div>
         <div class="field">
-          <label for="emotion">Your emotional cue</label>
+          <label for="emotion">The stakes and what matters most</label>
           <span class="hint">Choose a starter or write your own.</span>
-          <textarea id="emotion" data-field="emotion" rows="2" placeholder="e.g. Try to really do your best. It’s important to me."></textarea>
+          <textarea id="emotion" data-field="emotion" rows="2" placeholder="e.g. This will be shared with leadership, so accuracy matters more than speed."></textarea>
           <div class="chips" data-set-target="emotion">
-            <button class="chip" type="button" data-set="Breathe in, and breathe out. Try to really do your best. It’s important to me.">Breathe and do your best</button>
-            <button class="chip" type="button" data-set="This matters a lot to my students, so please take care to get it right.">It matters to my students</button>
-            <button class="chip" type="button" data-set="I really appreciate your help with this.">Appreciation</button>
+            <button class="chip" type="button" data-set="This is high-stakes and will be shared with leadership. Accuracy matters more than speed.">High stakes: accuracy first</button>
+            <button class="chip" type="button" data-set="This is a quick first draft. Keep it simple; I’ll refine it later.">Quick first draft</button>
+            <button class="chip" type="button" data-set="Correct citations matter most here. Flag anything you’re unsure of.">Citations matter most</button>
           </div>
         </div>
-        <div class="tip"><b>Try it as an experiment</b>The evidence here is mixed, and newer AI models tend to respond more to clear instructions than to encouragement. Run your prompt with and without this line and compare the results.</div>
+        <div class="tip"><b>How this works</b>The AI doesn’t rank your task against others. Instead, describing the stakes changes how it writes the response, such as how much it checks, explains or flags uncertainty. Being specific about what matters works better than simply saying “this is important.”</div>
+        <details class="compare learn">
+          <summary>Learn more: does the AI really prioritize my task?</summary>
+          <ul>
+            <li><b>It doesn’t rank or queue tasks.</b> The AI writes each response one word at a time, choosing each word based on everything in your prompt. Nothing is moved ahead of anything else.</li>
+            <li><b>The stakes change how it writes.</b> AI models learn from huge amounts of human writing, where high-stakes work comes with more care and quick drafts stay simple. Naming the stakes shapes how thorough and cautious the answer is, and what it focuses on.</li>
+            <li><b>It can’t make the AI know more.</b> Saying “accuracy matters” doesn’t give the AI facts it doesn’t have. It can still make mistakes or invent sources, so always check the result.</li>
+            <li><b>Specific beats general.</b> “This is important” gives the AI little to go on. “Correct citations matter most; flag anything you’re unsure of” tells it exactly what to change.</li>
+          </ul>
+        </details>
         <div class="nav"><button class="btn" type="button" data-go="6">Back</button><button class="btn primary" type="button" data-go="8">Review my prompt</button></div>
       </section>
 
@@ -552,13 +565,13 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
         <span><i style="background:var(--c4)"></i>Parameters</span>
         <span><i style="background:var(--c5)"></i>Ask</span>
         <span><i style="background:var(--c6)"></i>Rate</span>
-        <span><i style="background:var(--c7)"></i>Emotion</span>
+        <span><i style="background:var(--c7)"></i>Evaluate</span>
       </div>
     </aside>
   </div>
 
   <footer class="foot">
-    <p>Based on the PREPARE framework by Dan Fitzpatrick. Sources: <a href="https://aipioneers.org/the-prepare-framework/" target="_blank" rel="noopener noreferrer">“The Prepare Framework,” AI Pioneers<span class="sr"> (opens in a new tab)</span></a> and <a href="https://guides.libs.uga.edu/ai/prompts" target="_blank" rel="noopener noreferrer">“Writing Prompts,” Introduction to AI Literacy, University of Georgia Libraries<span class="sr"> (opens in a new tab)</span></a>.</p>
+    <p>Adapted from the PREPARE framework by Dan Fitzpatrick, with the final E reframed as Evaluate. Sources: <a href="https://aipioneers.org/the-prepare-framework/" target="_blank" rel="noopener noreferrer">“The Prepare Framework,” AI Pioneers<span class="sr"> (opens in a new tab)</span></a> and <a href="https://guides.libs.uga.edu/ai/prompts" target="_blank" rel="noopener noreferrer">“Writing Prompts,” Introduction to AI Literacy, University of Georgia Libraries<span class="sr"> (opens in a new tab)</span></a>.</p>
     <p>Found an issue or have feedback on this tool? <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-CVb8Q-8_mr1wV1ZDsgk6maMVXY3ULeQTmvFCL4qBv4G5Gw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">Share it using this form<span class="sr"> (opens in a new tab)</span></a>.</p>
   </footer>
 </div>
@@ -566,14 +579,14 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 <script>
 (function(){
   const KEY = 'prepare-builder-v1';
-  const NAMES = {1:'Prompt',2:'Role',3:'Explicit',4:'Parameters',5:'Ask',6:'Rate',7:'Emotion'};
+  const NAMES = {1:'Prompt',2:'Role',3:'Explicit',4:'Parameters',5:'Ask',6:'Rate',7:'Evaluate'};
   const blank = () => ({ step:1, task:'', purpose:'', role:'', roleExtra:'', context:'', instructions:['',''], avoid:'', thinking:false, format:'', length:'', tones:[], audience:'', extra:'', ask:'', rate:'', emotion:'' });
 
   const EXAMPLES = {
-    faculty: { task:'Create a grading rubric for the final research paper in my graduate seminar on qualitative research methods.', purpose:'so students know exactly how they’ll be assessed and I can give consistent, fair feedback across the cohort', role:'an experienced graduate faculty member and assessment specialist who has supervised many master’s and doctoral theses', roleExtra:'graduate-level learning outcomes, constructive alignment, and the standards of peer-reviewed journals in the social sciences', context:'The paper is 6,000–8,000 words and worth 50% of the course grade. Students are first-year master’s and PhD students designing an original qualitative study. Course outcomes: justify a methodology, design an ethical data collection plan, and critically engage with the literature.', instructions:['Use 5 criteria aligned to the course learning outcomes','Describe four performance levels: Exemplary, Proficient, Developing, Insufficient','Assign a point weighting to each criterion, totalling 100 points','Include a criterion for scholarly writing and APA 7th edition citation','Write descriptors that distinguish graduate-level critical thinking from summary'], avoid:'vague descriptors like “good” or “adequate” without saying what they look like', thinking:false, format:'a table with criteria as rows and performance levels as columns', length:'fits on two pages', tones:['professional','formal'], audience:'graduate students, written so they can self-assess before submitting', extra:'After the table, add 3 sentences I can use to introduce the rubric in the syllabus', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then give your rubric a rating from 0 to 10 for clarity and fairness to students, and indicate what could be improved.', emotion:'This matters a lot to my students, so please take care to get it right.' },
-    lesson: { task:'Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class.', purpose:'so students can explain the process in their own words by the end of the lesson', role:'an experienced secondary science teacher who makes abstract ideas concrete', roleExtra:'active learning strategies and common student misconceptions about how plants get food', context:'Mixed-ability class of 28; two students are learning English as an additional language. They know plants need light and water but haven’t studied cells yet.', instructions:['Open with a hook question that gets students thinking','Include one hands-on or visual activity','Address the misconception that plants get their food from the soil','End with a 3-question exit ticket','Add a short support note for EAL students'], avoid:'the full chemical equation, and anything that needs printing', thinking:true, format:'a table with columns for time, activity, and resources, followed by the exit ticket', length:'no more than one page', tones:['encouraging','concise'], audience:'written for a teacher to follow; any student-facing text at a 12-year-old reading level', extra:'Use UK spelling', ask:'Ask me some clarification questions first, and then answer.', rate:'Then give your answer a rating from 0 to 10, and indicate what could be improved.', emotion:'Breathe in, and breathe out. Try to really do your best. It’s important to me.' },
-    email: { task:'Write a reply to a customer whose order arrived two weeks late and damaged.', purpose:'to apologise, fix the problem, and keep them as a customer', role:'a friendly, professional customer service manager at a small online homeware shop', roleExtra:'service recovery best practice', context:'The customer, Priya, ordered a ceramic lamp. A courier delay caused the lateness. We can send a free replacement by express delivery or give a full refund.', instructions:['Apologise sincerely without blaming the courier','Offer both options and ask which she prefers','Include a 15% discount code: SORRY15','Close with a direct contact name and phone number placeholder'], avoid:'corporate jargon and phrases like “we apologise for any inconvenience”', thinking:false, format:'email with a subject line', length:'under 150 words', tones:['friendly','professional'], audience:'', extra:'', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then rate your answer against my instructions above, and point out anything you missed.', emotion:'Keeping this customer matters a lot to our small business. I really appreciate your help with this.' },
-    summary: { task:'Summarise the meeting notes I paste below into a short update for the wider team.', purpose:'so people who missed the meeting know what was decided and what they need to do', role:'an expert editor who writes in plain, clear English', roleExtra:'', context:'This was our monthly project check-in. Readers are busy and will skim on their phones.', instructions:['Start with the 2–3 key decisions','List action items with the owner’s name and due date','Flag anything still unresolved','Paste notes here: [PASTE NOTES]'], avoid:'minor discussion points and who said what', thinking:false, format:'short headings with bulleted lists', length:'under 200 words', tones:['concise'], audience:'the wider project team', extra:'', ask:'Ask me some clarification questions first, and then answer.', rate:'Then rate your answer from 0 to 10. If it scores below 8, improve it and show the new version.', emotion:'I really appreciate your help with this.' }
+    faculty: { task:'Create a grading rubric for the final research paper in my graduate seminar on qualitative research methods.', purpose:'so students know exactly how they’ll be assessed and I can give consistent, fair feedback across the cohort', role:'an experienced graduate faculty member and assessment specialist who has supervised many master’s and doctoral theses', roleExtra:'graduate-level learning outcomes, constructive alignment, and the standards of peer-reviewed journals in the social sciences', context:'The paper is 6,000–8,000 words and worth 50% of the course grade. Students are first-year master’s and PhD students designing an original qualitative study. Course outcomes: justify a methodology, design an ethical data collection plan, and critically engage with the literature.', instructions:['Use 5 criteria aligned to the course learning outcomes','Describe four performance levels: Exemplary, Proficient, Developing, Insufficient','Assign a point weighting to each criterion, totalling 100 points','Include a criterion for scholarly writing and APA 7th edition citation','Write descriptors that distinguish graduate-level critical thinking from summary'], avoid:'vague descriptors like “good” or “adequate” without saying what they look like', thinking:false, format:'a table with criteria as rows and performance levels as columns', length:'fits on two pages', tones:['professional','formal'], audience:'graduate students, written so they can self-assess before submitting', extra:'After the table, add 3 sentences I can use to introduce the rubric in the syllabus', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then give your rubric a rating from 0 to 10 for clarity and fairness to students, and indicate what could be improved.', emotion:'This rubric will be shared with students and counts for 50% of their grade, so fairness and clarity matter more than brevity.' },
+    lesson: { task:'Create a 45-minute lesson plan introducing photosynthesis to a Year 8 class.', purpose:'so students can explain the process in their own words by the end of the lesson', role:'an experienced secondary science teacher who makes abstract ideas concrete', roleExtra:'active learning strategies and common student misconceptions about how plants get food', context:'Mixed-ability class of 28; two students are learning English as an additional language. They know plants need light and water but haven’t studied cells yet.', instructions:['Open with a hook question that gets students thinking','Include one hands-on or visual activity','Address the misconception that plants get their food from the soil','End with a 3-question exit ticket','Add a short support note for EAL students'], avoid:'the full chemical equation, and anything that needs printing', thinking:true, format:'a table with columns for time, activity, and resources, followed by the exit ticket', length:'no more than one page', tones:['encouraging','concise'], audience:'written for a teacher to follow; any student-facing text at a 12-year-old reading level', extra:'Use UK spelling', ask:'Ask me some clarification questions first, and then answer.', rate:'Then give your answer a rating from 0 to 10, and indicate what could be improved.', emotion:'This is a first draft I’ll adapt for my class, so focus on a solid structure rather than polish.' },
+    email: { task:'Write a reply to a customer whose order arrived two weeks late and damaged.', purpose:'to apologise, fix the problem, and keep them as a customer', role:'a friendly, professional customer service manager at a small online homeware shop', roleExtra:'service recovery best practice', context:'The customer, Priya, ordered a ceramic lamp. A courier delay caused the lateness. We can send a free replacement by express delivery or give a full refund.', instructions:['Apologise sincerely without blaming the courier','Offer both options and ask which she prefers','Include a 15% discount code: SORRY15','Close with a direct contact name and phone number placeholder'], avoid:'corporate jargon and phrases like “we apologise for any inconvenience”', thinking:false, format:'email with a subject line', length:'under 150 words', tones:['friendly','professional'], audience:'', extra:'', ask:'Ask me up to 3 clarifying questions first. Wait for my replies, then answer.', rate:'Then rate your answer against my instructions above, and point out anything you missed.', emotion:'Keeping this customer matters a lot to our small business, so getting the tone right matters most.' },
+    summary: { task:'Summarise the meeting notes I paste below into a short update for the wider team.', purpose:'so people who missed the meeting know what was decided and what they need to do', role:'an expert editor who writes in plain, clear English', roleExtra:'', context:'This was our monthly project check-in. Readers are busy and will skim on their phones.', instructions:['Start with the 2–3 key decisions','List action items with the owner’s name and due date','Flag anything still unresolved','Paste notes here: [PASTE NOTES]'], avoid:'minor discussion points and who said what', thinking:false, format:'short headings with bulleted lists', length:'under 200 words', tones:['concise'], audience:'the wider project team', extra:'', ask:'Ask me some clarification questions first, and then answer.', rate:'Then rate your answer from 0 to 10. If it scores below 8, improve it and show the new version.', emotion:'This goes to the whole team, so accuracy about decisions and owners matters most. Flag anything unclear in the notes.' }
   };
 
   let S;
@@ -627,7 +640,7 @@ details.compare summary{cursor:pointer; font-weight:700; color:var(--kc)}
 
     out.push({k:5, text: clean(S.ask) ? endPunct(clean(S.ask)) : '', empty:'Optional: a request for clarifying questions.'});
     out.push({k:6, text: clean(S.rate) ? endPunct(clean(S.rate)) : '', empty:'Optional: a request to rate the answer.'});
-    out.push({k:7, text: clean(S.emotion) ? endPunct(clean(S.emotion)) : '', empty:'Optional: an emotional cue.'});
+    out.push({k:7, text: clean(S.emotion) ? endPunct(clean(S.emotion)) : '', empty:'Optional: the stakes and what matters most.'});
     return out;
   }
   const fullPrompt = () => segments().map(s => s.text).filter(Boolean).join('\n\n');
